@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Temporar testing file
+Structures/TMP_TESTING
