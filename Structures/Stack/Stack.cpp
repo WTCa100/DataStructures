@@ -12,7 +12,6 @@ Stack::Stack(Node* initHead)
         return;
     }
 
-    std::cout << "Test Printout " << initHead << "\n"; 
     this->head_ = initHead;
     this->size_ = Node::calculateNodeLenght(initHead);
     this->isEmpty_ = false;
