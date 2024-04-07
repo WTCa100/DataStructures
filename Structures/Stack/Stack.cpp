@@ -14,21 +14,9 @@ Stack::Stack(Node* initHead)
 
     std::cout << "Test Printout " << initHead << "\n"; 
     this->head_ = initHead;
-    this->size_ = calculateSize();
+    this->size_ = Node::calculateNodeLenght(initHead);
     this->isEmpty_ = false;
     std::cout << "Created stack object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
-}
-
-size_t Stack::calculateSize()
-{
-    size_t count = 0;
-    Node* helper = this->head_;
-    while(helper)
-    {
-        ++count;
-        helper = helper->getNext();
-    }
-    return count;
 }
 
 Stack::~Stack()

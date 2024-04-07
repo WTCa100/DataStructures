@@ -31,5 +31,8 @@
 *.out
 *.app
 
-# Temporar testing file
+# .vscode
+.vscode
+
+# Temporary testing file
 Structures/TMP_TESTING
