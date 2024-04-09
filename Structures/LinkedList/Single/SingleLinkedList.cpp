@@ -42,6 +42,7 @@ void SingleLinkedList::popHead()
     }
 
     std::cout << "Deleting head at Single Linked List " << this << " with data_=" << this->head_->getData() << "\n";
+    int deletedNodeData = this->head_->getData();
     if(!head_->getNext())
     {
         delete(head_);
@@ -52,7 +53,7 @@ void SingleLinkedList::popHead()
         this->head_ = currentHead->getNext();
         delete(currentHead);
     }
-    std::cout << "Successufuly deleted head from Single Linked List" << std::endl;
+    std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Single Linked List" << std::endl;
     --this->size_;
     if(!this->size_) this->isEmpty_ = true;
 }
@@ -66,6 +67,7 @@ void SingleLinkedList::popBack()
     }
 
     std::cout << "Deleting back at Single Linked List " << this << "\n";
+    int deletedNodeData;
     Node* prev   = this->head_;
     Node* last   = this->head_->getNext();
     while(last->getNext())
@@ -75,10 +77,11 @@ void SingleLinkedList::popBack()
     }
     // [Prev] -> [Helper - Valid Node] -> Null
     prev->setNext(nullptr);
-    std::cout << "Last vlue " << last << " with: data_" << last->getData() << "\n"; 
+    std::cout << "Last value " << last << " with: data_ " << last->getData() << "\n"; 
+    deletedNodeData = last->getData();
     delete(last);
     // [Prev] -> Null
-    std::cout << "Successfuly deleted last element in a Single Linked List" << std::endl;
+    std::cout << "Successfuly deleted last element (data = " << deletedNodeData << ") in a Single Linked List" << std::endl;
     --this->size_;
     if(!this->size_) this->isEmpty_ = true;
 }
@@ -101,6 +104,7 @@ void SingleLinkedList::popAt(const size_t& pos)
     else if (pos == this->size_ - 1) this->popBack();
     else
     {
+        int deletedNodeData;
         Node* prev = this->head_;
         Node* target = prev->getNext();
         size_t index = 1;
@@ -111,11 +115,12 @@ void SingleLinkedList::popAt(const size_t& pos)
             ++index;
         }
 
+        deletedNodeData = target->getData();
         // [Prev] -> [Target] -> [Next] -> ... -> Null
         prev->setNext(target->getNext());
         delete(target);
         // [Prev] -> [Next] -> ... -> Null
-        std::cout << "Successfuly deleted element at "<< pos <<" index in a Single Linked List" << std::endl;
+        std::cout << "Successfuly deleted element (data = " << deletedNodeData << ") at index " << index << " in a Single Linked List" << std::endl;
         --this->size_;
         if(!this->size_) this->isEmpty_ = true;
     }
@@ -137,7 +142,7 @@ void SingleLinkedList::insertHead(Node* newNode)
     }
     else
     {
-        newNode->setNext(this->head_->getNext());
+        newNode->setNext(this->head_);
         this->head_ = newNode;
         ++this->size_;
     }
@@ -190,13 +195,13 @@ void SingleLinkedList::insertAt(Node* newNode, const size_t& pos)
     }
 
     if((!this->head_ || this->isEmpty_) || pos == 0) this->insertHead(newNode);
-    else if(pos == this->size_ - 1) this->pushBack(newNode);
     else
     {
+        std::cout << "Adding " << newNode << " with data_=" << newNode->getData() << " at " << this << " pos " << pos << "\n";
         Node* prev = this->head_;
         Node* currentIndexNode = prev->getNext();
         size_t index = 0;
-        while(index < pos)
+        while(index < pos - 1)
         {
             prev = currentIndexNode;
             currentIndexNode = prev->getNext();
@@ -260,11 +265,13 @@ bool SingleLinkedList::at(const size_t& pos, int& container)
 {
     if(!this->head_ || this->isEmpty_)
     {
+        // Can also be changed into a throw - 
         std::cout << "Single Linked List at " << this << " is empty or head is null\n";
         return false;
     }
     if(pos >= this->size_)
     {
+        // Can also be changed into a throw
         std::cout << pos << " is out of range in Single Linked List at " << this << " Aborting..." << std::endl;
         return false;
     }
