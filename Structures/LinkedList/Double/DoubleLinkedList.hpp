@@ -1,10 +1,10 @@
-#ifndef STRUCTURES_LINKED_LIST_SINGLE_SINGLE_LINKED_LIST_H
-#define STRUCTURES_LINKED_LIST_SINGLE_SINGLE_LINKED_LIST_H
-#include <vector>
+#ifndef STRUCTURES_LINKED_LIST_DOUBLE_DOUBLE_LINKED_LIST_H
+#define STRUCTURES_LINKED_LIST_DOUBLE_DOUBLE_LINKED_LIST_H
 
+#include <vector>
 #include "../../Common/Node/Node.hpp"
 
-namespace SingleLinked
+namespace DoubleLinked
 {
     class List
     {
@@ -18,7 +18,7 @@ namespace SingleLinked
         List(Node* initHead);
         ~List();
 
-        // Methods
+       // Methods
         void popHead();
         void popBack();
         void popAt(const size_t& pos);
@@ -37,5 +37,5 @@ namespace SingleLinked
         bool at(const size_t& pos, int& container);
         std::vector<int> getValues();
     };
-} // namespace SingleLinked
+} // namespace DoubleLinked
 #endif

@@ -13,7 +13,7 @@ Stack::Stack(Node* initHead)
     }
 
     this->head_ = initHead;
-    this->size_ = Node::calculateNodeLenght(initHead);
+    this->size_ = Utils::calculateNodeLenght(initHead);
     this->isEmpty_ = false;
     std::cout << "Created stack object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
 }

@@ -1,6 +1,9 @@
-#pragma once
+#ifndef STRUCTURES_STACK_STACK_HPP
+#define STRUCTURES_STACK_STACK_HPP
 
 #include "../Common/Node/Node.hpp"
+
+using SingleLinked::Node;
 
 class Stack
 {
@@ -24,3 +27,5 @@ public:
     size_t getSize() const { return this->size_; }
     bool isEmpty() const { return this->isEmpty_; }
 };
+
+#endif
