@@ -45,8 +45,8 @@ namespace DoubleLinked
             
             // Setters
             void setData(int newData)   { this->data_ = newData; }
-            void setNext(Node* newNext) { this->next_ = newNext; }
-            void setPrev(Node* newPrev) { this->prev_ = newPrev; }
+            void setNext(Node* newNext);
+            void setPrev(Node* newPrev);
             // Getters
             int getData() const { return this->data_; }
             Node* getNext() const { return this->next_; }

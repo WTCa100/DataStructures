@@ -3,39 +3,37 @@
 #include <vector>
 
 #include "../../Common/Node/Node.hpp"
+#include "../LinkedList.hpp"
 
 namespace SingleLinked
 {
-    class List
+    class List : public LinkedList
     {
     private:
         Node* head_;
-        size_t size_;
-        bool isEmpty_;
     public:
-        List() : head_(nullptr), size_(0), isEmpty_(true) {}
+        List() : LinkedList(0, false), head_(nullptr) {}
         List(int initValue) : List(new Node(initValue)) {}
         List(Node* initHead);
         ~List();
 
-        // Methods
-        void popHead();
-        void popBack();
-        void popAt(const size_t& pos);
-        void insertHead(const int& newValue);
-        void insertHead(Node* newNode);
-        void pushBack(const int& newValue);
-        void pushBack(Node* newNode);
-        void insertAt(const int& newValue, const size_t& pos);
-        void insertAt(Node* newNode, const size_t& pos);
-        bool isPresent(const int& value);
-        void parse() const;
+        // Implementations
+        void popHead() override;
+        void popBack() override;
+        void popAt(const size_t& pos) override;
+        void insertHead(const int& newValue) override;
+        void pushBack(const int& newValue) override;
+        void insertAt(const int& newValue, const size_t& pos) override;
+        bool isPresent(const int& value) const override;
+        void parse() const override;
 
         // Getters
-        bool isEmpty() { return this->isEmpty_; }
-        size_t getSize() { return this->size_; }
-        bool at(const size_t& pos, int& container);
-        std::vector<int> getValues();
+        int at(const size_t& pos) override;
+        std::vector<int> getValues() override;
+        // Derrived methods
+        void insertHead(Node* newNode);
+        void pushBack(Node* newNode);
+        void insertAt(Node* newNode, const size_t& pos);
     };
 } // namespace SingleLinked
 #endif

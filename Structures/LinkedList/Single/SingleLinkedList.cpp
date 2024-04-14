@@ -1,10 +1,12 @@
 #include <iostream>
+#include <sstream>
 
 #include "SingleLinkedList.hpp"
 
 namespace SingleLinked
 {
-    List::List(Node* initHead)
+
+    List::List(Node* initHead) : LinkedList(Utils::calculateNodeLenght(initHead), false)
     {
         if(!initHead)
         {
@@ -13,10 +15,6 @@ namespace SingleLinked
             this->size_ = 0;
             return;
         }
-
-        this->head_ = initHead;
-        this->size_ = Utils::calculateNodeLenght(initHead);
-        this->isEmpty_ = false;
         std::cout << "Created Single Linked List object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
     }
 
@@ -55,7 +53,11 @@ namespace SingleLinked
             this->head_ = currentHead->getNext();
             delete(currentHead);
         }
-        std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Single Linked List" << std::endl;
+        std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Single Linked List\n";
+        if(this->head_)
+        {
+            std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << std::endl;  
+        }
         --this->size_;
         if(!this->size_) this->isEmpty_ = true;
     }
@@ -222,7 +224,7 @@ namespace SingleLinked
         std::cout << "Successfuly added new value into a Single Linked List" << std::endl;
     }
 
-    bool List::isPresent(const int& value)
+    bool List::isPresent(const int& value) const
     {
         if(!this->head_ || this->isEmpty_)
         {
@@ -263,19 +265,19 @@ namespace SingleLinked
         std::cout << "Parsing done" << std::endl;
     }
 
-    bool List::at(const size_t& pos, int& container)
+    int List::at(const size_t& pos)
     {
+        std::stringstream errMsg("");
         if(!this->head_ || this->isEmpty_)
         {
-            // Can also be changed into a throw - 
-            std::cout << "Single Linked List at " << this << " is empty or head is null\n";
-            return false;
+            errMsg << "Single Linked List at " << this << " is empty or head is null";
+            throw std::runtime_error(errMsg.str().c_str());
         }
         if(pos >= this->size_)
         {
             // Can also be changed into a throw
-            std::cout << pos << " is out of range in Single Linked List at " << this << " Aborting..." << std::endl;
-            return false;
+           errMsg << pos << " is out of range in Single Linked List at " << this << " Aborting...";
+            throw std::out_of_range(errMsg.str().c_str());
         }
 
         Node* ptr = this->head_;
@@ -287,9 +289,7 @@ namespace SingleLinked
             ++index;
         }
 
-        container = ptr->getData();
-        return true;
-
+        return ptr->getData();
     }
 
     std::vector<int> List::getValues()
@@ -303,5 +303,6 @@ namespace SingleLinked
         }
         return out;
     }
+
 } // namespace name
 
