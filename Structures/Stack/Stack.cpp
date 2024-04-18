@@ -1,8 +1,10 @@
 #include <iostream>
 
+#include "../Common/Utilities/Utilities.hpp"
 #include "./Stack.hpp"
 
-Stack::Stack(Node* initHead)
+
+Stack::Stack(SingleNode* initHead)
 {
     if(!initHead)
     {
@@ -13,7 +15,7 @@ Stack::Stack(Node* initHead)
     }
 
     this->head_ = initHead;
-    this->size_ = Utils::calculateNodeLenght(initHead);
+    this->size_ = Utilities::calculateNodeSequenceLenght(initHead);
     this->isEmpty_ = false;
     std::cout << "Created stack object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
 }
@@ -21,11 +23,11 @@ Stack::Stack(Node* initHead)
 Stack::~Stack()
 {
     std::cout << "Deleting stack from " << this << " with head at " << this->head_ << "\n";
-    Node* helper = this->head_;
+    SingleNode* helper = this->head_;
     // Maybe change to pop later?
     while(helper)
     {
-        Node* nextNode = helper->getNext();
+        SingleNode* nextNode = helper->getNext();
         delete(helper);
         helper = nextNode;
         --this->size_;
@@ -37,7 +39,7 @@ Stack::~Stack()
 void Stack::parse() const
 {
     std::cout << "Printing " << this << " with head at " << this->head_ << "\n";
-    Node* helper = this->head_;
+    SingleNode* helper = this->head_;
     while(helper)
     {
         std::cout << "At " << helper << " with params: data_=" << helper->getData() << " next_=" << helper->getNext() <<  "\n";
@@ -48,11 +50,11 @@ void Stack::parse() const
 
 void Stack::insert(int newData)
 {
-    Node* makeNode = new Node(newData);
+    SingleNode* makeNode = new SingleNode(newData);
     this->insert(makeNode);
 }
 
-void Stack::insert(Node* newNode)
+void Stack::insert(SingleNode* newNode)
 {
     std::cout << "Adding new node at " << newNode << " to stack at " << this << "\n";
     if(!this->head_)
@@ -80,7 +82,7 @@ void Stack::pop()
     }
 
     std::cout << "Popping value from stack (" << this << ") current top at " << this->head_ << "\n";
-    Node* prevHead = this->head_;
+    SingleNode* prevHead = this->head_;
     this->head_ = prevHead->getNext();
     delete(prevHead);
     --this->size_;

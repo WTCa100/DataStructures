@@ -1,27 +1,25 @@
 #ifndef STRUCTURES_STACK_STACK_HPP
 #define STRUCTURES_STACK_STACK_HPP
 
-#include "../Common/Node/Node.hpp"
-
-using SingleLinked::Node;
+#include "../Common/Node/SingleNode.hpp"
 
 class Stack
 {
 private:
-    Node* head_;
+    SingleNode* head_;
     size_t size_;
     bool isEmpty_;
 public:
     Stack() : head_(nullptr), size_(0), isEmpty_(true) { std::cout << "Created empty Stack at " << this << std::endl; }
-    Stack(Node* initHead);
+    Stack(SingleNode* initHead);
     ~Stack();
 
     // Methods
     void parse() const;
     void insert(int newData);
-    void insert(Node* newNode);
+    void insert(SingleNode* newNode);
     void pop();
-    Node* peek() const { return this->head_; }
+    SingleNode* peek() const { return this->head_; }
 
     // Getters
     size_t getSize() const { return this->size_; }

@@ -1,8 +1,6 @@
 // Interface file
 #include <vector>
 
-#include "../Common/Node/Node.hpp"
-
 class LinkedList
 {
     protected:
