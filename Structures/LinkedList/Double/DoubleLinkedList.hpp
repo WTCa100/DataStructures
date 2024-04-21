@@ -10,7 +10,7 @@ class DoubleLinkedList : public LinkedList
     private:
     DoubleNode* head_;
     public:
-    DoubleLinkedList() : LinkedList(0, false), head_(nullptr) {}
+    DoubleLinkedList() : LinkedList(0, true), head_(nullptr) {}
     DoubleLinkedList(int initValue) : DoubleLinkedList(new DoubleNode(initValue)) {}
     DoubleLinkedList(DoubleNode* initHead);
     ~DoubleLinkedList();

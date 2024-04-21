@@ -21,6 +21,7 @@ DoubleLinkedList::DoubleLinkedList(DoubleNode* initHead) : LinkedList(Utilities:
         this->size_ = 0;
         return;
     }
+    this->head_ = initHead;
     std::cout << "Created Double Linked List object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
 }
 
@@ -29,14 +30,20 @@ DoubleLinkedList::~DoubleLinkedList()
     std::cout << "Tearing down Double Linked List " << this << " with head at " << this->head_ << "\n";
 
     DoubleNode* helper = this->head_;
-    while(helper)
+    if(!this->isEmpty_)
     {
-        DoubleNode* nextNode = helper->getNext();
-        delete(helper);
-        helper = nextNode;
-        --this->size_;
+        while(helper)
+        {
+            // Debug entry
+            std::cout  << "DBG: Tearing down " << helper << "\n";
+            DoubleNode* nextNode = helper->getNext();
+            delete(helper);
+            helper = nextNode;
+            --this->size_;
+        }
+        this->isEmpty_ = true;
     }
-    this->isEmpty_ = true;
+    std::cout << "Teardown successful" << std::endl;
 }
 
 void DoubleLinkedList::popHead()
@@ -53,6 +60,8 @@ void DoubleLinkedList::popHead()
     if(!head_->getNext())
     {
         delete(head_);
+        // Avoid invalid read-size block during the next display handling
+        head_ = nullptr;
     }
     else
     {
@@ -64,7 +73,7 @@ void DoubleLinkedList::popHead()
     std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Double Linked List\n";
     if(this->head_)
     {
-        std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << std::endl;  
+        std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << ")" << std::endl;  
     }
     --this->size_;
     if(!this->size_) this->isEmpty_ = true;
@@ -90,9 +99,12 @@ void DoubleLinkedList::popBack()
     | prev |     | target | --> | NULL |
     +------+ <-- +--------+     +------+
     */
-    last->getPrev()->setNext(nullptr);
+   if(!(last == this->head_))
+   {
+        last->getPrev()->setNext(nullptr);
+        std::cout << "DBG: Prev " << last->getPrev() << " with: data_ " << last->getPrev()->getData() << "\n";
+   }
     std::cout << "Last value " << last << " with: data_ " << last->getData() << "\n"; 
-    std::cout << "DBG: Prev " << last->getPrev() << "with: data_ " << last->getPrev()->getData() << "\n";
     deletedNodeData = last->getData();
     delete(last);
     /*
@@ -100,7 +112,7 @@ void DoubleLinkedList::popBack()
     | prev | --> | NULL |
     +------+     +------+
     */
-    std::cout << "Successfuly deleted last element (data = " << deletedNodeData << ") in a Single Linked List" << std::endl;
+    std::cout << "Successfuly deleted last element (data = " << deletedNodeData << ") in a Double Linked List" << std::endl;
     --this->size_;
     if(!this->size_) this->isEmpty_ = true;
 }
@@ -124,7 +136,7 @@ void DoubleLinkedList::popAt(const size_t& pos)
     else
     {
         int deletedNodeData;
-        DoubleNode* target = this->head_;
+        DoubleNode* target = this->head_->getNext();
         size_t index = 1;
         while(index < pos)
         {
@@ -200,19 +212,19 @@ void DoubleLinkedList::pushBack(DoubleNode* newNode)
             return;
         }
         this->head_ = newNode;
-        this->size_ = Utilities::calculateNodeSequenceLenght(this->head_);
         this->isEmpty_ = false;
     }
     else
     {
         DoubleNode* last = this->head_;
-        while(last->getData())
+        while(last->getNext())
         {
             last = last->getNext();
         }
         last->linkNext(newNode);
-        ++this->size_;
     }
+
+    this->size_ = Utilities::calculateNodeSequenceLenght(newNode);
     std::cout << "New back added to Double Linked List. Current head at " << this->head_ << std::endl; 
 }
 
@@ -239,7 +251,7 @@ void DoubleLinkedList::insertAt(DoubleNode* newNode, const size_t& pos)
         std::cout << "Adding " << newNode << " with data_=" << newNode->getData() << " at " << this << " pos " << pos << "\n";
         DoubleNode* currentIndexNode = this->head_->getNext();
         size_t index = 1;
-        while(index < pos - 1)
+        while(index < pos)
         {
             currentIndexNode = currentIndexNode->getNext();
             ++index;
@@ -302,7 +314,8 @@ void DoubleLinkedList::parse() const
     std::cout << "Parsing Double Linked List at " << this << " with head at " << this->head_ << "\n";
     while(helper)
     {
-        std::cout << "At " << helper << " with params: data_=" << helper->getData() << " next_=" << helper->getNext() <<  "\n";
+        std::cout << "At " << helper << " with params: data_=" << helper->getData() 
+                  << " prev_=" << helper->getPrev() << " next_=" << helper->getNext() << "\n";
         helper = helper->getNext();
     }
     std::cout << "Parsing done" << std::endl;

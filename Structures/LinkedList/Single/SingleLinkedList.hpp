@@ -10,7 +10,7 @@ class SingleLinkedList : public LinkedList
 private:
     SingleNode* head_;
 public:
-    SingleLinkedList() : LinkedList(0, false), head_(nullptr) {}
+    SingleLinkedList() : LinkedList(0, true), head_(nullptr) {}
     SingleLinkedList(int initValue) : SingleLinkedList(new SingleNode(initValue)) {}
     SingleLinkedList(SingleNode* initHead);
     ~SingleLinkedList();

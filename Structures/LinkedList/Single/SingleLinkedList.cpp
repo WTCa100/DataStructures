@@ -13,6 +13,7 @@ SingleLinkedList::SingleLinkedList(SingleNode* initHead) : LinkedList(Utilities:
         this->size_ = 0;
         return;
     }
+    this->head_ = initHead;
     std::cout << "Created Single Linked List object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
 }
 
@@ -21,14 +22,18 @@ SingleLinkedList::~SingleLinkedList()
     std::cout << "Tearing down Single Linked List " << this << " with head at " << this->head_ << "\n";
 
     SingleNode* helper = this->head_;
-    while(helper)
+    if(!this->isEmpty())
     {
-        SingleNode* nextNode = helper->getNext();
-        delete(helper);
-        helper = nextNode;
-        --this->size_;
+        while(helper)
+        {
+            SingleNode* nextNode = helper->getNext();
+            delete(helper);
+            helper = nextNode;
+            --this->size_;
+        }
+        this->isEmpty_ = true;
     }
-    this->isEmpty_ = true;
+    std::cout << "Teardown successful" << std::endl;
 }
 
 void SingleLinkedList::popHead()
@@ -44,6 +49,7 @@ void SingleLinkedList::popHead()
     if(!head_->getNext())
     {
         delete(head_);
+        head_ = nullptr;
     }
     else
     {
@@ -54,7 +60,7 @@ void SingleLinkedList::popHead()
     std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Single Linked List\n";
     if(this->head_)
     {
-        std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << std::endl;  
+        std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << ")" << std::endl;  
     }
     --this->size_;
     if(!this->size_) this->isEmpty_ = true;
@@ -80,6 +86,10 @@ void SingleLinkedList::popBack()
     // [Prev] -> [Helper - Valid Node] -> Null
     prev->setNext(nullptr);
     std::cout << "Last value " << last << " with: data_ " << last->getData() << "\n"; 
+    if(prev == this->head_) // we haven't move so we will front = back
+    {
+        last = prev;
+    }
     deletedNodeData = last->getData();
     delete(last);
     // [Prev] -> Null
@@ -164,7 +174,6 @@ void SingleLinkedList::pushBack(SingleNode* newNode)
     if(!this->head_ || this->isEmpty_)
     {
         this->head_ = newNode;
-        this->size_ = Utilities::calculateNodeSequenceLenght(this->head_);
         this->isEmpty_ = false;
     }
     else
@@ -175,8 +184,10 @@ void SingleLinkedList::pushBack(SingleNode* newNode)
             last = last->getNext();
         }
         last->setNext(newNode);
-        ++this->size_;
+        // We can technically push back a node with existing sequence
+        this->size_ = Utilities::calculateNodeSequenceLenght(newNode);
     }
+    this->size_ = Utilities::calculateNodeSequenceLenght(this->head_);
     std::cout << "New back added to Single Linked List. Current head at " << this->head_ << std::endl; 
 }
 
