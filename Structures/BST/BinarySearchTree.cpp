@@ -27,6 +27,15 @@ void BinarySearchTree::recursiveTeardown(TreeNode* node)
     }
 }
 
+BinarySearchTree::BinarySearchTree(BinarySearchTree& obj)
+{
+    // Make a deep copy of a tree starting from obj.head_
+    head_    = deepCopyNode(obj.head_);
+    size_    = obj.size_;
+    isEmpty_ = obj.isEmpty_;
+    std::cout << "Successfully created a BST copied from " << &obj << "\n";
+}
+
 BinarySearchTree::BinarySearchTree(TreeNode* head)
 {
     head_ = head;
@@ -62,7 +71,7 @@ void BinarySearchTree::insert(TreeNode* newNode)
     if(recursiveInserter(head_, newNode))
     {
         std::cout << "Successfully added new node (value= " << newNode->data_ << ") to the BST" << std::endl;
-        ++size_;
+        size_ += calculateSize(newNode);
     }
     else
     {
@@ -73,17 +82,18 @@ void BinarySearchTree::insert(TreeNode* newNode)
     std::cout << "DBG: size= " << size_ << " isEmpty= " << std::boolalpha << isEmpty_ << std::endl;
 }
 
-bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode, bool result)
+bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode)
 {
-    int newValue = newNode->data_;
     if(!head_)
     {
         head_ = newNode;
-        result = true;
         isEmpty_ = false;
+        return true;
     }
-    else if(node)
+
+    if(node)
     {
+        int newValue = newNode->data_;
         int currentNodeValue = node->data_;
         if(currentNodeValue == newValue)
         {
@@ -91,33 +101,32 @@ bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode, bool
             return false;
         }
 
-        if(currentNodeValue > newValue)
+        if(currentNodeValue < newValue)
         {
-            if(node->right_)
-            {
-                result = recursiveInserter(node->right_, newNode);
-            }
-            else
+            if(!node->right_)
             {
                 node->right_ = newNode;
                 return true;
             }
+
+            return recursiveInserter(node->right_, newNode);
         }
         
-        if(currentNodeValue < newValue)
+        if(currentNodeValue > newValue)
         {
-            if(node->left_)
-            {
-                result = recursiveInserter(node->left_, newNode);
-            }
-            else
+            if(!node->left_)
             {
                 node->left_ = newNode;
                 return true;
             }
+
+            return recursiveInserter(node->left_, newNode);
         }
     }
-    return result;
+    
+    // Maybe throw error?
+    throw std::runtime_error("Impossible Error - Node shall never be nullptr\n");
+    return false; //Should never reach here
 }
 
 void BinarySearchTree::remove(int value)
@@ -143,15 +152,15 @@ void BinarySearchTree::remove(int value)
     std::cout << "DBG: size= " << size_ << " isEmpty= " << std::boolalpha << isEmpty_ << std::endl;
 }
 
-bool BinarySearchTree::recusriveRemover(TreeNode** node, /*TreeNode* parent,*/ int value, bool result)
+bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
 {
     if((*node)->data_ > value)
     {
-        result = recusriveRemover(&(*node)->left_, value);
+        return recusriveRemover(&(*node)->left_, value);
     }
     else if ((*node)->data_ < value)
     {
-        result = recusriveRemover(&(*node)->right_, value);
+        return recusriveRemover(&(*node)->right_, value);
     }
     if((*node)->data_ == value)
     {
@@ -207,8 +216,122 @@ bool BinarySearchTree::recusriveRemover(TreeNode** node, /*TreeNode* parent,*/ i
         delete successor;
         return true;
     }
+    
+    throw std::runtime_error("Impossible Error - Node shall never be nullptr\n");
+    return false; // Should never reach here - just for safety
+}
 
-    return result;
+TreeNode* BinarySearchTree::recursiveFinder(TreeNode* node, int targetValue) const
+{
+    if(node)
+    {
+        if(targetValue > node->data_)
+        {
+            return recursiveFinder(node->right_, targetValue);
+        }
+        else if(targetValue < node->data_)
+        {
+            return recursiveFinder(node->left_, targetValue);
+        }
+        else
+        {
+            std::cout << "Value " << targetValue << " found at " << node << std::endl;
+            return node;
+        }
+    }
+
+    // Value not found
+    std::cout << "Could not find value " << targetValue << "\n";
+    return nullptr;
+}
+
+TreeNode* BinarySearchTree::deepCopyNode(TreeNode* head) const
+{
+    TreeNode* copiedNode = nullptr;
+    if(head)
+    {
+        copiedNode = new TreeNode(*head);
+        if(head->left_)
+        {
+            copiedNode->left_ = deepCopyNode(head->left_);
+        }
+
+        if(head->right_)
+        {
+            copiedNode->right_ = deepCopyNode(head->right_);
+        }
+    }
+
+    return copiedNode;
+}
+
+BinarySearchTree* BinarySearchTree::getSubTree(int startingHead) const
+{
+    // 1. Find Node
+    TreeNode* findNode = recursiveFinder(head_, startingHead);
+    if(!findNode)
+    {
+        return nullptr;
+    }
+
+    TreeNode* newHead;
+    // 2. Get the sub tree copy from the tree.
+    // Make a deep copy of a given head.
+    newHead = deepCopyNode(findNode);
+
+    return new BinarySearchTree(newHead);
+}
+
+bool BinarySearchTree::recursiveComperator(TreeNode* lhs, TreeNode* rhs) const
+{
+    // At this point there are no differences and check is at the end node
+    if(!lhs && !rhs)
+    {
+        return true;
+    }
+
+    // One node is not present - differance was found
+    if(!lhs || !rhs)
+    {
+        return false;
+    }
+
+    // Data is not the same - differance was found
+    if(lhs->data_ != rhs->data_)
+    {
+        return false;
+    }
+
+    // If everything is the same, traverse until end of the tree
+    return recursiveComperator(lhs->left_, rhs->left_) &&
+           recursiveComperator(lhs->right_, rhs->right_);
+}
+
+bool BinarySearchTree::operator == (const BinarySearchTree& comp)
+{
+    if((size_ != comp.size_) || (isEmpty_ != comp.isEmpty_)) return false;
+    return recursiveComperator(head_, comp.head_);
+}
+
+void BinarySearchTree::recursiveConverter(TreeNode* node, std::vector<int>& product)
+{
+    if(node)
+    {
+        if(node->left_) recursiveConverter(node->left_, product);
+        
+        product.push_back(node->data_);
+
+        if(node->right_) recursiveConverter(node->right_, product);
+    }
+
+    return;
+}
+
+std::vector<int>BinarySearchTree::toVector()
+{
+    std::vector<int> product;
+    recursiveConverter(head_, product);
+    return product;
 }
 
 BinarySearchTree::~BinarySearchTree()

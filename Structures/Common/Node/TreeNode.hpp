@@ -8,10 +8,10 @@ struct TreeNode
     TreeNode* left_;
     TreeNode* right_;
 
-    TreeNode* getLeft() const;
     // Ctors : Dtors
     TreeNode() = default;
     TreeNode(int data) : data_(data), left_(nullptr), right_(nullptr) {}
+    TreeNode(const TreeNode& obj);
     ~TreeNode() = default;
 };
 
