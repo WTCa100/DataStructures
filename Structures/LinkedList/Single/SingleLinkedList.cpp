@@ -4,7 +4,8 @@
 #include "../Utilities/Utilities.hpp"
 #include "SingleLinkedList.hpp"
 
-SingleLinkedList::SingleLinkedList(SingleNode* initHead) : LinkedList(Utilities::calculateNodeSequenceLenght(initHead), false)
+template <typename T>
+SingleLinkedList<T>::SingleLinkedList(SingleNode<T>* initHead) : LinkedList(Utilities::calculateNodeSequenceLenght(initHead), false)
 {
     if(!initHead)
     {
@@ -17,7 +18,8 @@ SingleLinkedList::SingleLinkedList(SingleNode* initHead) : LinkedList(Utilities:
     std::cout << "Created Single Linked List object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
 }
 
-SingleLinkedList::~SingleLinkedList()
+template <typename T>
+SingleLinkedList<T>::~SingleLinkedList()
 {
     std::cout << "Tearing down Single Linked List " << this << " with head at " << this->head_ << "\n";
 
@@ -36,7 +38,8 @@ SingleLinkedList::~SingleLinkedList()
     std::cout << "Teardown successful" << std::endl;
 }
 
-void SingleLinkedList::popHead()
+template <typename T>
+void SingleLinkedList<T>::popHead()
 {
     if(this->isEmpty_ || !this->head_)
     {
@@ -66,7 +69,8 @@ void SingleLinkedList::popHead()
     if(!this->size_) this->isEmpty_ = true;
 }
 
-void SingleLinkedList::popBack()
+template <typename T>
+void SingleLinkedList<T>::popBack()
 {
     if(this->isEmpty_ || !this->head_)
     {
@@ -98,7 +102,8 @@ void SingleLinkedList::popBack()
     if(!this->size_) this->isEmpty_ = true;
 }
 
-void SingleLinkedList::popAt(const size_t& pos)
+template <typename T>
+void SingleLinkedList<T>::popAt(const size_t& pos)
 {
     if(this->isEmpty_ || !this->head_)
     {
@@ -116,7 +121,7 @@ void SingleLinkedList::popAt(const size_t& pos)
     else if (pos == this->size_ - 1) this->popBack();
     else
     {
-        int deletedNodeData;
+        T deletedNodeData;
         SingleNode* prev = this->head_;
         SingleNode* target = prev->getNext();
         size_t index = 1;
@@ -138,12 +143,14 @@ void SingleLinkedList::popAt(const size_t& pos)
     }
 }
 
-void SingleLinkedList::insertHead(const int& newValue)
+template <typename T>
+void SingleLinkedList<T>::insertHead(const int& newValue)
 {
     this->insertHead(new SingleNode(newValue));
 }
 
-void SingleLinkedList::insertHead(SingleNode* newNode)
+template <typename T>
+void SingleLinkedList<T>::insertHead(SingleNode<T>* newNode)
 {
     std::cout << "Adding new node " << newNode << " as head with data_=" << newNode->getData() << 
                 " at Single Linked List " << this << " current head at " << this->head_ << "\n";
@@ -162,12 +169,14 @@ void SingleLinkedList::insertHead(SingleNode* newNode)
     std::cout << "New head added to Single Linked List. Current head at " << this->head_ << std::endl; 
 }
 
-void SingleLinkedList::pushBack(const int& newValue)
+template <typename T>
+void SingleLinkedList<T>::pushBack(const T& newValue)
 {
     this->pushBack(new SingleNode(newValue));
 }
 
-void SingleLinkedList::pushBack(SingleNode* newNode)
+template <typename T>
+void SingleLinkedList<T>::pushBack(SingleNode<T>* newNode)
 {
     std::cout << "Adding new node " << newNode << " as back with data_=" << newNode->getData() << 
                 " at Single Linked List " << this << "\n";
@@ -191,12 +200,14 @@ void SingleLinkedList::pushBack(SingleNode* newNode)
     std::cout << "New back added to Single Linked List. Current head at " << this->head_ << std::endl; 
 }
 
-void SingleLinkedList::insertAt(const int& newValue, const size_t& pos)
+template <typename T>
+void SingleLinkedList<T>::insertAt(const T& newValue, const size_t& pos)
 {
     this->insertAt(new SingleNode(newValue), pos);
 }
 
-void SingleLinkedList::insertAt(SingleNode* newNode, const size_t& pos)
+template <typename T>
+void SingleLinkedList<T>::insertAt(SingleNode<T>* newNode, const size_t& pos)
 {
     if(!this->head_ || this->isEmpty_)
     {
@@ -234,7 +245,8 @@ void SingleLinkedList::insertAt(SingleNode* newNode, const size_t& pos)
     std::cout << "Successfuly added new value into a Single Linked List" << std::endl;
 }
 
-bool SingleLinkedList::isPresent(const int& value) const
+template <typename T>
+bool SingleLinkedList<T>::isPresent(const T& value) const
 {
     if(!this->head_ || this->isEmpty_)
     {
@@ -257,7 +269,8 @@ bool SingleLinkedList::isPresent(const int& value) const
     return false;
 }
 
-void SingleLinkedList::parse() const
+template <typename T>
+void SingleLinkedList<T>::parse() const
 {
     if(!this->head_ || this->isEmpty_)
     {
@@ -275,7 +288,8 @@ void SingleLinkedList::parse() const
     std::cout << "Parsing done" << std::endl;
 }
 
-int SingleLinkedList::at(const size_t& pos)
+template <typename T>
+T SingleLinkedList<T>::at(const size_t& pos)
 {
     std::stringstream errMsg("");
     if(!this->head_ || this->isEmpty_)
@@ -302,7 +316,8 @@ int SingleLinkedList::at(const size_t& pos)
     return ptr->getData();
 }
 
-std::vector<int> SingleLinkedList::getValues()
+template <typename T>
+std::vector<int> SingleLinkedList<T>::getValues()
 {
     std::vector<int> out;
     SingleNode* ptr = this->head_;

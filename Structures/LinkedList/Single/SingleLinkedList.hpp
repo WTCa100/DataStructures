@@ -5,14 +5,15 @@
 #include "../../Common/Node/SingleNode.hpp"
 #include "../LinkedList.hpp"
 
+template <typename T>
 class SingleLinkedList : public LinkedList
 {
 private:
     SingleNode* head_;
 public:
     SingleLinkedList() : LinkedList(0, true), head_(nullptr) {}
-    SingleLinkedList(int initValue) : SingleLinkedList(new SingleNode(initValue)) {}
-    SingleLinkedList(SingleNode* initHead);
+    SingleLinkedList(T initValue) : SingleLinkedList(new SingleNode<T>(initValue)) {}
+    SingleLinkedList(SingleNode<T>* initHead);
     ~SingleLinkedList();
 
     // Implementations
@@ -20,18 +21,18 @@ public:
     void popBack() override;
     void popAt(const size_t& pos) override;
     void insertHead(const int& newValue) override;
-    void pushBack(const int& newValue) override;
-    void insertAt(const int& newValue, const size_t& pos) override;
-    bool isPresent(const int& value) const override;
+    void pushBack(const T& newValue) override;
+    void insertAt(const T& newValue, const size_t& pos) override;
+    bool isPresent(const T& value) const override;
     void parse() const override;
 
     // Getters
-    int at(const size_t& pos) override;
+    T at(const size_t& pos) override;
     std::vector<int> getValues() override;
     // Derriveds' methods
-    void insertHead(SingleNode* newNode);
-    void pushBack(SingleNode* newNode);
-    void insertAt(SingleNode* newNode, const size_t& pos);
+    void insertHead(SingleNode<T>* newNode);
+    void pushBack(SingleNode<T>* newNode);
+    void insertAt(SingleNode<T>* newNode, const size_t& pos);
 };
 
 #endif

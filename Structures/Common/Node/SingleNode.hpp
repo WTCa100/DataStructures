@@ -8,21 +8,22 @@ typedef unsigned long size_t;
 
 // Maybe changed later into class template to make it more unique.
 
+template <typename T>
 class SingleNode
 {
     private:
-        int data_;
+        T data_;
         SingleNode* next_;
     public:
-        SingleNode() : SingleNode(0) {};
+        SingleNode() = default;
         SingleNode(int initData) : data_(initData), next_(nullptr) {}
 
         // Setter
-        void setData(int newData) { this->data_ = newData; }
-        void setNext(SingleNode* newNext) { this->next_ = newNext; }
+        void setData(T newData) { data_ = newData; }
+        void setNext(SingleNode* newNext) { next_ = newNext; }
         // Getter
-        int getData() const { return this->data_; }
-        SingleNode* getNext() const { return this->next_; } 
+        T getData() const { return data_; }
+        SingleNode* getNext() const { return next_; } 
 
         ~SingleNode() = default;
 };
