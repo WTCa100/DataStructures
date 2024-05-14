@@ -4,8 +4,8 @@
 #include "../../Common/Utilities/Utilities.hpp"
 #include "DoubleLinkedList.hpp"
 
-
-DoubleLinkedList::DoubleLinkedList(DoubleNode* initHead) : LinkedList(Utilities::calculateNodeSequenceLenght(initHead), false)
+template <typename T>
+DoubleLinkedList<T>::DoubleLinkedList(DoubleNode<T>* initHead) : LinkedList(Utilities::calculateNodeSequenceLenght(initHead), false)
 {
     if(initHead->getPrev())
     {
@@ -17,45 +17,47 @@ DoubleLinkedList::DoubleLinkedList(DoubleNode* initHead) : LinkedList(Utilities:
     if(!initHead)
     {
         std::cout << "Created Double Linked List object with head at nullptr\n";
-        this->isEmpty_ = true;
-        this->size_ = 0;
+        isEmpty_ = true;
+        size_ = 0;
         return;
     }
-    this->head_ = initHead;
-    std::cout << "Created Double Linked List object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
+    head_ = initHead;
+    std::cout << "Created Double Linked List object with params: head_=" << head_ << " size_=" << size_ << " isEmpty_=" << isEmpty_ << std::endl;
 }
 
-DoubleLinkedList::~DoubleLinkedList()
+template <typename T>
+DoubleLinkedList<T>::~DoubleLinkedList()
 {
-    std::cout << "Tearing down Double Linked List " << this << " with head at " << this->head_ << "\n";
+    std::cout << "Tearing down Double Linked List " << this << " with head at " << head_ << "\n";
 
-    DoubleNode* helper = this->head_;
-    if(!this->isEmpty_)
+    DoubleNode<T>* helper = head_;
+    if(!isEmpty_)
     {
         while(helper)
         {
             // Debug entry
             std::cout  << "DBG: Tearing down " << helper << "\n";
-            DoubleNode* nextNode = helper->getNext();
+            DoubleNode<T>* nextNode = helper->getNext();
             delete(helper);
             helper = nextNode;
-            --this->size_;
+            --size_;
         }
-        this->isEmpty_ = true;
+        isEmpty_ = true;
     }
     std::cout << "Teardown successful" << std::endl;
 }
 
-void DoubleLinkedList::popHead()
+template <typename T>
+void DoubleLinkedList<T>::popHead()
 {
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
         return;
     }
 
-    std::cout << "Deleting head at Double Linked List " << this << " with data_=" << this->head_->getData() << "\n";
-    int deletedNodeData = this->head_->getData();
+    std::cout << "Deleting head at Double Linked List " << this << " with data_=" << head_->getData() << "\n";
+    T deletedNodeData = head_->getData();
     // We do only one check, as head shall not have any pointer to it's previous sibling
     if(!head_->getNext())
     {
@@ -65,23 +67,24 @@ void DoubleLinkedList::popHead()
     }
     else
     {
-        DoubleNode* currentHead = this->head_;
-        this->head_ = currentHead->getNext();
-        this->head_->setPrev(nullptr); // No prev is allowed as head
+        DoubleNode<T>* currentHead = head_;
+        head_ = currentHead->getNext();
+        head_->setPrev(nullptr); // No prev is allowed as head
         delete(currentHead);
     }
     std::cout << "Successufuly deleted head (data = " << deletedNodeData << ") from Double Linked List\n";
-    if(this->head_)
+    if(head_)
     {
-        std::cout << "New head at " << this->head_ << " (data = " << this->head_->getData() << " next = " << this->head_->getNext() << ")" << std::endl;  
+        std::cout << "New head at " << head_ << " (data = " << head_->getData() << " next = " << head_->getNext() << ")" << std::endl;  
     }
-    --this->size_;
-    if(!this->size_) this->isEmpty_ = true;
+    --size_;
+    if(!size_) isEmpty_ = true;
 }
 
-void DoubleLinkedList::popBack()
+template <typename T>
+void DoubleLinkedList<T>::popBack()
 {
-    if(this->isEmpty_ || !this->head_)
+    if(isEmpty_ || !head_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
         return;
@@ -89,7 +92,7 @@ void DoubleLinkedList::popBack()
 
     std::cout << "Deleting back at Double Linked List " << this << "\n";
     int deletedNodeData;
-    DoubleNode* last   = this->head_;
+    DoubleNode<T>* last   = head_;
     while(last->getNext())
     {
         last = last->getNext();
@@ -99,7 +102,7 @@ void DoubleLinkedList::popBack()
     | prev |     | target | --> | NULL |
     +------+ <-- +--------+     +------+
     */
-   if(!(last == this->head_))
+   if(!(last == head_))
    {
         last->getPrev()->setNext(nullptr);
         std::cout << "DBG: Prev " << last->getPrev() << " with: data_ " << last->getPrev()->getData() << "\n";
@@ -113,30 +116,31 @@ void DoubleLinkedList::popBack()
     +------+     +------+
     */
     std::cout << "Successfuly deleted last element (data = " << deletedNodeData << ") in a Double Linked List" << std::endl;
-    --this->size_;
-    if(!this->size_) this->isEmpty_ = true;
+    --size_;
+    if(!size_) isEmpty_ = true;
 }
 
-void DoubleLinkedList::popAt(const size_t& pos)
+template <typename T>
+void DoubleLinkedList<T>::popAt(const size_t& pos)
 {
-    if(this->isEmpty_ || !this->head_)
+    if(isEmpty_ || !head_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
         return;
     }
 
-    if(pos >= this->size_)
+    if(pos >= size_)
     {
         std::cout << "Given index is out of range in Double Linked List at " << this << "\n";
         return;
     }
 
-    if(pos == 0) this->popHead();
-    else if (pos == this->size_ - 1) this->popBack();
+    if(pos == 0) popHead();
+    else if (pos == size_ - 1) popBack();
     else
     {
-        int deletedNodeData;
-        DoubleNode* target = this->head_->getNext();
+        T deletedNodeData;
+        DoubleNode<T>* target = head_->getNext();
         size_t index = 1;
         while(index < pos)
         {
@@ -158,20 +162,22 @@ void DoubleLinkedList::popAt(const size_t& pos)
         +------+ <-- +------+ <-- +------+     +------+ 
         */
         std::cout << "Successfuly deleted element (data = " << deletedNodeData << ") at index " << index << " in a Single Linked List" << std::endl;
-        --this->size_;
-        if(!this->size_) this->isEmpty_ = true;
+        --size_;
+        if(!size_) isEmpty_ = true;
     }
 }
 
-void DoubleLinkedList::insertHead(const int& newValue)
+template <typename T>
+void DoubleLinkedList<T>::insertHead(const int& newValue)
 {
-    this->insertHead(new DoubleNode(newValue));
+    insertHead(new DoubleNode<T>(newValue));
 }
 
-void DoubleLinkedList::insertHead(DoubleNode* newNode)
+template <typename T>
+void DoubleLinkedList<T>::insertHead(DoubleNode<T>* newNode)
 {
     std::cout << "Adding new node " << newNode << " as head with data_=" << newNode->getData() << 
-                " at Double Linked List " << this << " current head at " << this->head_ << "\n";
+                " at Double Linked List " << this << " current head at " << head_ << "\n";
 
     if(newNode->getPrev())
     {
@@ -179,44 +185,46 @@ void DoubleLinkedList::insertHead(DoubleNode* newNode)
         return;
     }
 
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
-        this->head_ = const_cast<DoubleNode*>(newNode);
-        this->size_ = Utilities::calculateNodeSequenceLenght(this->head_);
-        this->isEmpty_ = false;
+        head_ = const_cast<DoubleNode<T>*>(newNode);
+        size_ = Utilities::calculateNodeSequenceLenght(head_);
+        isEmpty_ = false;
     }
     else
     {    
-        newNode->linkNext(this->head_);
-        this->head_ = newNode;
-        ++this->size_;
+        newNode->linkNext(head_);
+        head_ = newNode;
+        ++size_;
     }
-    std::cout << "New back added to Double Linked List. Current head at " << this->head_ << std::endl; 
+    std::cout << "New back added to Double Linked List. Current head at " << head_ << std::endl; 
 }
 
-void DoubleLinkedList::pushBack(const int& newValue)
+template <typename T>
+void DoubleLinkedList<T>::pushBack(const T& newValue)
 {
-    this->pushBack(new DoubleNode(newValue));
+    pushBack(new DoubleNode<T>(newValue));
 }
 
-void DoubleLinkedList::pushBack(DoubleNode* newNode)
+template <typename T>
+void DoubleLinkedList<T>::pushBack(DoubleNode<T>* newNode)
 {
     std::cout << "Adding new node " << newNode << " as back with data_=" << newNode->getData() << 
                 " at Double Linked List " << this << "\n";
 
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         if(newNode->getPrev())
         {
             std::cout << "Cannot insert a had that has a prev_ pointer." << std::endl;
             return;
         }
-        this->head_ = newNode;
-        this->isEmpty_ = false;
+        head_ = newNode;
+        isEmpty_ = false;
     }
     else
     {
-        DoubleNode* last = this->head_;
+        DoubleNode<T>* last = head_;
         while(last->getNext())
         {
             last = last->getNext();
@@ -224,32 +232,34 @@ void DoubleLinkedList::pushBack(DoubleNode* newNode)
         last->linkNext(newNode);
     }
 
-    this->size_ = Utilities::calculateNodeSequenceLenght(newNode);
-    std::cout << "New back added to Double Linked List. Current head at " << this->head_ << std::endl; 
+    size_ = Utilities::calculateNodeSequenceLenght(newNode);
+    std::cout << "New back added to Double Linked List. Current head at " << head_ << std::endl; 
 }
 
-void DoubleLinkedList::insertAt(const int& newValue, const size_t& pos)
+template <typename T>
+void DoubleLinkedList<T>::insertAt(const T& newValue, const size_t& pos)
 {
-    this->insertAt(new DoubleNode(newValue), pos);
+    insertAt(new DoubleNode<T>(newValue), pos);
 }
 
-void DoubleLinkedList::insertAt(DoubleNode* newNode, const size_t& pos)
+template <typename T>
+void DoubleLinkedList<T>::insertAt(DoubleNode<T>* newNode, const size_t& pos)
 {
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
     }
-    else if(pos >= this->size_)
+    else if(pos >= size_)
     {
         std::cout << pos << " is out of range in Double Linked List at " << this << " Aborting..." << std::endl;
         return;
     }
 
-    if((!this->head_ || this->isEmpty_) || pos == 0) this->insertHead(newNode);
+    if((!head_ || isEmpty_) || pos == 0) insertHead(newNode);
     else
     {
         std::cout << "Adding " << newNode << " with data_=" << newNode->getData() << " at " << this << " pos " << pos << "\n";
-        DoubleNode* currentIndexNode = this->head_->getNext();
+        DoubleNode<T>* currentIndexNode = head_->getNext();
         size_t index = 1;
         while(index < pos)
         {
@@ -268,7 +278,7 @@ void DoubleLinkedList::insertAt(DoubleNode* newNode, const size_t& pos)
         */
         currentIndexNode->getPrev()->linkNext(newNode);
         newNode->linkNext(currentIndexNode);
-        ++this->size_;
+        ++size_;
         /*
         +------------+ --> +----------+ --> +------------+ --> +------------+ 
         | Node N - 1 |     | Node N   |     | Node N + 1 |     | Node N + 2 |  
@@ -279,15 +289,16 @@ void DoubleLinkedList::insertAt(DoubleNode* newNode, const size_t& pos)
     std::cout << "Successfuly added new value into a Double Linked List" << std::endl;
 }
 
-bool DoubleLinkedList::isPresent(const int& value) const
+template <typename T>
+bool DoubleLinkedList<T>::isPresent(const T& value) const
 {
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
         return false;
     }
 
-    DoubleNode* ptr = this->head_;
+    DoubleNode<T>* ptr = head_;
     while(ptr)
     {
         if(ptr->getData() == value)
@@ -302,16 +313,17 @@ bool DoubleLinkedList::isPresent(const int& value) const
     return false;
 }
 
-void DoubleLinkedList::parse() const
+template <typename T>
+void DoubleLinkedList<T>::parse() const
 {
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         std::cout << "Double Linked List at " << this << " is empty or head is null\n";
         return;
     }
 
-    DoubleNode* helper = this->head_;
-    std::cout << "Parsing Double Linked List at " << this << " with head at " << this->head_ << "\n";
+    DoubleNode<T>* helper = head_;
+    std::cout << "Parsing Double Linked List at " << this << " with head at " << head_ << "\n";
     while(helper)
     {
         std::cout << "At " << helper << " with params: data_=" << helper->getData() 
@@ -321,22 +333,23 @@ void DoubleLinkedList::parse() const
     std::cout << "Parsing done" << std::endl;
 }
 
-int DoubleLinkedList::at(const size_t& pos)
+template <typename T>
+T DoubleLinkedList<T>::at(const size_t& pos)
 {
     std::stringstream errMsg("");
-    if(!this->head_ || this->isEmpty_)
+    if(!head_ || isEmpty_)
     {
         errMsg << "Double Linked List at " << this << " is empty or head is null";
         throw std::runtime_error(errMsg.str().c_str());
     }
-    if(pos >= this->size_)
+    if(pos >= size_)
     {
         // Can also be changed into a throw
         errMsg << pos << " is out of range in Double Linked List at " << this << " Aborting...";
         throw std::out_of_range(errMsg.str().c_str());
     }
 
-    DoubleNode* ptr = this->head_;
+    DoubleNode<T>* ptr = head_;
     size_t index = 0;
 
     while(index < pos)
@@ -348,10 +361,11 @@ int DoubleLinkedList::at(const size_t& pos)
     return ptr->getData();
 }
 
-std::vector<int> DoubleLinkedList::getValues()
+template <typename T>
+std::vector<T> DoubleLinkedList<T>::getValues()
 {
-    std::vector<int> out;
-    DoubleNode* ptr = this->head_;
+    std::vector<T> out;
+    DoubleNode<T>* ptr = head_;
     while(ptr)
     {
         out.push_back(ptr->getData());

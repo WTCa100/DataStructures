@@ -2,15 +2,16 @@
 #define STRUCTURES_COMMON_NODE_TREENODE_HPP
 
 // This can be alternatively swapped to a friend class of BinarySeachTree
+template <typename T>
 struct TreeNode
 {
-    int data_;
-    TreeNode* left_;
-    TreeNode* right_;
+    T data_;
+    TreeNode<T>* left_;
+    TreeNode<T>* right_;
 
     // Ctors : Dtors
     TreeNode() = default;
-    TreeNode(int data) : data_(data), left_(nullptr), right_(nullptr) {}
+    TreeNode(T data) : data_(data), left_(nullptr), right_(nullptr) {}
     TreeNode(const TreeNode& obj);
     ~TreeNode() = default;
 };

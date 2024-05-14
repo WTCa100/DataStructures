@@ -3,10 +3,11 @@
 
 namespace Utilities
 {
-    size_t calculateNodeSequenceLenght(const SingleNode* target)
+    template <typename T>
+    size_t calculateNodeSequenceLenght(const SingleNode<T>* target)
     {
         size_t counter = 0;
-        SingleNode* helper = const_cast<SingleNode*>(target);
+        SingleNode<T>* helper = const_cast<SingleNode<T>*>(target);
         while(helper)
         {
             ++counter;
@@ -14,12 +15,14 @@ namespace Utilities
         }
         return counter;
     }
-    size_t calculateNodeSequenceLenght(const DoubleNode* target)
+
+    template <typename T>
+    size_t calculateNodeSequenceLenght(const DoubleNode<T>* target)
     {
         size_t counter = 0;
-        DoubleNode* ref = const_cast<DoubleNode*>(target);
+        DoubleNode<T>* ref = const_cast<DoubleNode<T>*>(target);
         // Handle each next node + target
-        DoubleNode* helperFront = ref;
+        DoubleNode<T>* helperFront = ref;
         while(helperFront)
         {
             ++counter;
@@ -27,7 +30,7 @@ namespace Utilities
         }
         
         // Handle each prev node
-        DoubleNode* helperBack = ref->getPrev();
+        DoubleNode<T>* helperBack = ref->getPrev();
         while(helperBack)
         {
             ++counter;
@@ -35,7 +38,9 @@ namespace Utilities
         }
         return counter;
     }
-    bool areNodesLinked(const DoubleNode* prev, const DoubleNode* next)
+
+    template <typename T>
+    bool areNodesLinked(const DoubleNode<T>* prev, const DoubleNode<T>* next)
     {
         return prev->getNext() == next &&
                next->getPrev() == prev;

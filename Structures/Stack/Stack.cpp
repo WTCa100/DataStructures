@@ -4,42 +4,45 @@
 #include "./Stack.hpp"
 
 
-Stack::Stack(SingleNode* initHead)
+template <typename T>
+Stack<T>::Stack(SingleNode<T>* initHead)
 {
     if(!initHead)
     {
         std::cout << "Created stack object with head at nullptr\n";
-        this->isEmpty_ = true;
-        this->size_ = 0;
+        isEmpty_ = true;
+        size_ = 0;
         return;
     }
 
-    this->head_ = initHead;
-    this->size_ = Utilities::calculateNodeSequenceLenght(initHead);
-    this->isEmpty_ = false;
-    std::cout << "Created stack object with params: head_=" << this->head_ << " size_=" << this->size_ << " isEmpty_=" << this->isEmpty_ << std::endl;
+    head_ = initHead;
+    size_ = Utilities::calculateNodeSequenceLenght(initHead);
+    isEmpty_ = false;
+    std::cout << "Created stack object with params: head_=" << head_ << " size_=" << size_ << " isEmpty_=" << isEmpty_ << std::endl;
 }
 
-Stack::~Stack()
+template <typename T>
+Stack<T>::~Stack()
 {
-    std::cout << "Deleting stack from " << this << " with head at " << this->head_ << "\n";
-    SingleNode* helper = this->head_;
+    std::cout << "Deleting stack from " << this << " with head at " << head_ << "\n";
+    SingleNode<T>* helper = head_;
     // Maybe change to pop later?
     while(helper)
     {
-        SingleNode* nextNode = helper->getNext();
+        SingleNode<T>* nextNode = helper->getNext();
         delete(helper);
         helper = nextNode;
-        --this->size_;
+        --size_;
     }
-    this->isEmpty_ = true;
+    isEmpty_ = true;
     std::cout << "Stack entry deleted" << std::endl;
 }
 
-void Stack::parse() const
+template <typename T>
+void Stack<T>::parse() const
 {
-    std::cout << "Printing " << this << " with head at " << this->head_ << "\n";
-    SingleNode* helper = this->head_;
+    std::cout << "Printing " << this << " with head at " << head_ << "\n";
+    SingleNode<T>* helper = head_;
     while(helper)
     {
         std::cout << "At " << helper << " with params: data_=" << helper->getData() << " next_=" << helper->getNext() <<  "\n";
@@ -48,44 +51,47 @@ void Stack::parse() const
     std::cout << "Parsing done" << std::endl;
 }
 
-void Stack::insert(int newData)
+template <typename T>
+void Stack<T>::insert(const T& newData)
 {
-    SingleNode* makeNode = new SingleNode(newData);
-    this->insert(makeNode);
+    SingleNode<T>* makeNode = new SingleNode<T>(newData);
+    insert(makeNode);
 }
 
-void Stack::insert(SingleNode* newNode)
+template <typename T>
+void Stack<T>::insert(SingleNode<T>* newNode)
 {
     std::cout << "Adding new node at " << newNode << " to stack at " << this << "\n";
-    if(!this->head_)
+    if(!head_)
     {
-        this->head_ = newNode;
+        head_ = newNode;
         isEmpty_ = false;
     }
     else
     {
-        newNode->setNext(this->head_);
-        this->head_ = newNode;
+        newNode->setNext(head_);
+        head_ = newNode;
     }
 
-    ++this->size_;
+    ++size_;
     std::cout << "Value " << newNode->getData() << " added successfully" << std::endl;
     return;
 }
 
-void Stack::pop()
+template <typename T>
+void Stack<T>::pop()
 {
-    if(this->isEmpty_ || !this->head_)
+    if(isEmpty_ || !head_)
     {
         std::cout << "Stack at " << this << " is empty.\n";
         return;
     }
 
-    std::cout << "Popping value from stack (" << this << ") current top at " << this->head_ << "\n";
-    SingleNode* prevHead = this->head_;
-    this->head_ = prevHead->getNext();
+    std::cout << "Popping value from stack (" << this << ") current top at " << head_ << "\n";
+    SingleNode<T>* prevHead = head_;
+    head_ = prevHead->getNext();
     delete(prevHead);
-    --this->size_;
-    if(!this->size_) this->isEmpty_ = false;
+    --size_;
+    if(!size_) isEmpty_ = false;
     std::cout << "Value popped" << std::endl;
 }

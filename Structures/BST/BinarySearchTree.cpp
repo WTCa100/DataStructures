@@ -1,8 +1,8 @@
 #include <iostream>
 #include "BinarySearchTree.hpp"
 
-
-size_t BinarySearchTree::calculateSize(TreeNode* node, size_t passedValue)
+template <typename T>
+size_t BinarySearchTree<T>::calculateSize(TreeNode<T>* node, size_t passedValue)
 {   
     if(node)
     {
@@ -14,7 +14,8 @@ size_t BinarySearchTree::calculateSize(TreeNode* node, size_t passedValue)
     return passedValue;
 }
 
-void BinarySearchTree::recursiveTeardown(TreeNode* node)
+template <typename T>
+void BinarySearchTree<T>::recursiveTeardown(TreeNode<T>* node)
 {
     if(node)
     {
@@ -27,7 +28,8 @@ void BinarySearchTree::recursiveTeardown(TreeNode* node)
     }
 }
 
-BinarySearchTree::BinarySearchTree(BinarySearchTree& obj)
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree(BinarySearchTree<T>& obj)
 {
     // Make a deep copy of a tree starting from obj.head_
     head_    = deepCopyNode(obj.head_);
@@ -36,7 +38,8 @@ BinarySearchTree::BinarySearchTree(BinarySearchTree& obj)
     std::cout << "Successfully created a BST copied from " << &obj << "\n";
 }
 
-BinarySearchTree::BinarySearchTree(TreeNode* head)
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree(TreeNode<T>* head)
 {
     head_ = head;
     if(!head_)
@@ -55,12 +58,14 @@ BinarySearchTree::BinarySearchTree(TreeNode* head)
           : std::cout << "Successfully created a BST with head at " << head_ << " size= " << size_ << std::endl;
 }
 
-void BinarySearchTree::insert(int value)
+template <typename T>
+void BinarySearchTree<T>::insert(T value)
 {
-    insert(new TreeNode(value));
+    insert(new TreeNode<T>(value));
 }
 
-void BinarySearchTree::insert(TreeNode* newNode)
+template <typename T>
+void BinarySearchTree<T>::insert(TreeNode<T>* newNode)
 {
     if(!newNode)
     {
@@ -82,7 +87,8 @@ void BinarySearchTree::insert(TreeNode* newNode)
     std::cout << "DBG: size= " << size_ << " isEmpty= " << std::boolalpha << isEmpty_ << std::endl;
 }
 
-bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode)
+template <typename T>
+bool BinarySearchTree<T>::recursiveInserter(TreeNode<T>* node, TreeNode<T>* newNode)
 {
     if(!head_)
     {
@@ -93,8 +99,8 @@ bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode)
 
     if(node)
     {
-        int newValue = newNode->data_;
-        int currentNodeValue = node->data_;
+        T newValue = newNode->data_;
+        T currentNodeValue = node->data_;
         if(currentNodeValue == newValue)
         {
             std::cout << newValue << " is already present in the BST\n";
@@ -129,7 +135,8 @@ bool BinarySearchTree::recursiveInserter(TreeNode* node, TreeNode* newNode)
     return false; //Should never reach here
 }
 
-void BinarySearchTree::remove(int value)
+template <typename T>
+void BinarySearchTree<T>::remove(T value)
 {
     std::cout << "Trying to remove " << value << " from BST " << "\n";
     if(isEmpty_) 
@@ -152,7 +159,8 @@ void BinarySearchTree::remove(int value)
     std::cout << "DBG: size= " << size_ << " isEmpty= " << std::boolalpha << isEmpty_ << std::endl;
 }
 
-bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
+template <typename T>
+bool BinarySearchTree<T>::recusriveRemover(TreeNode<T>** node, T value)
 {
     if((*node)->data_ > value)
     {
@@ -178,7 +186,7 @@ bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
         if(!(*node)->left_)
         {
             std::cout << "Single sibling on right side - swapping values\n";
-            TreeNode* tmp = (*node)->right_;
+            TreeNode<T>* tmp = (*node)->right_;
             delete(*node);
             *node = tmp;
             std::cout << "Value sawpped to " << tmp->data_ << " from " << tmp << std::endl;
@@ -187,7 +195,7 @@ bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
         if(!(*node)->right_)
         {
             std::cout << "Single sibling on left side - swapping values\n";
-            TreeNode* tmp = (*node)->left_;
+            TreeNode<T>* tmp = (*node)->left_;
             delete(*node);
             *node = tmp;
             std::cout << "Value sawpped to " << tmp->data_ << std::endl;
@@ -196,8 +204,8 @@ bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
         
         // Case 3: Both siblings are present
         std::cout << "Both sibling present - finding the next in order successor\n";
-        TreeNode* successorParent = *node;
-        TreeNode* successor = (*node)->right_;
+        TreeNode<T>* successorParent = *node;
+        TreeNode<T>* successor = (*node)->right_;
         while(successor->left_)
         {
             successorParent = successor;
@@ -221,7 +229,8 @@ bool BinarySearchTree::recusriveRemover(TreeNode** node, int value)
     return false; // Should never reach here - just for safety
 }
 
-TreeNode* BinarySearchTree::recursiveFinder(TreeNode* node, int targetValue) const
+template <typename T>
+TreeNode<T>* BinarySearchTree<T>::recursiveFinder(TreeNode<T>* node, T targetValue) const
 {
     if(node)
     {
@@ -245,7 +254,8 @@ TreeNode* BinarySearchTree::recursiveFinder(TreeNode* node, int targetValue) con
     return nullptr;
 }
 
-TreeNode* BinarySearchTree::deepCopyNode(TreeNode* head) const
+template <typename T>
+TreeNode<T>* BinarySearchTree<T>::deepCopyNode(TreeNode<T>* head) const
 {
     TreeNode* copiedNode = nullptr;
     if(head)
@@ -265,24 +275,26 @@ TreeNode* BinarySearchTree::deepCopyNode(TreeNode* head) const
     return copiedNode;
 }
 
-BinarySearchTree* BinarySearchTree::getSubTree(int startingHead) const
+template <typename T>
+BinarySearchTree<T>* BinarySearchTree<T>::getSubTree(T startingHead) const
 {
     // 1. Find Node
-    TreeNode* findNode = recursiveFinder(head_, startingHead);
+    TreeNode<T>* findNode = recursiveFinder(head_, startingHead);
     if(!findNode)
     {
         return nullptr;
     }
 
-    TreeNode* newHead;
+    TreeNode<T>* newHead;
     // 2. Get the sub tree copy from the tree.
     // Make a deep copy of a given head.
     newHead = deepCopyNode(findNode);
 
-    return new BinarySearchTree(newHead);
+    return new BinarySearchTree<T>(newHead);
 }
 
-bool BinarySearchTree::recursiveComperator(TreeNode* lhs, TreeNode* rhs) const
+template <typename T>
+bool BinarySearchTree<T>::recursiveComperator(TreeNode<T>* lhs, TreeNode<T>* rhs) const
 {
     // At this point there are no differences and check is at the end node
     if(!lhs && !rhs)
@@ -307,13 +319,15 @@ bool BinarySearchTree::recursiveComperator(TreeNode* lhs, TreeNode* rhs) const
            recursiveComperator(lhs->right_, rhs->right_);
 }
 
-bool BinarySearchTree::operator == (const BinarySearchTree& comp)
+template <typename T>
+bool BinarySearchTree<T>::operator == (const BinarySearchTree<T>& comp)
 {
     if((size_ != comp.size_) || (isEmpty_ != comp.isEmpty_)) return false;
     return recursiveComperator(head_, comp.head_);
 }
 
-void BinarySearchTree::recursiveConverter(TreeNode* node, std::vector<int>& product)
+template <typename T>
+void BinarySearchTree<T>::recursiveConverter(TreeNode<T>* node, std::vector<T>& product)
 {
     if(node)
     {
@@ -327,14 +341,16 @@ void BinarySearchTree::recursiveConverter(TreeNode* node, std::vector<int>& prod
     return;
 }
 
-std::vector<int>BinarySearchTree::toVector()
+template <typename T>
+std::vector<T>BinarySearchTree<T>::toVector()
 {
-    std::vector<int> product;
+    std::vector<T> product;
     recursiveConverter(head_, product);
     return product;
 }
 
-BinarySearchTree::~BinarySearchTree()
+template <typename T>
+BinarySearchTree<T>::~BinarySearchTree()
 {
     recursiveTeardown(head_);  
 }

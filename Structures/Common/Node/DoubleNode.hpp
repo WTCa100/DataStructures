@@ -6,16 +6,17 @@
 typedef unsigned long size_t;
 #endif
 
+template<typename T>
 class DoubleNode
 {
     private:
-        int data_;
+        T data_;
         DoubleNode* next_;
         DoubleNode* prev_;
     public:
-        DoubleNode() : DoubleNode(0) {}
-        DoubleNode(int initData) : DoubleNode(initData, nullptr) {}
-        DoubleNode(int initData, DoubleNode* prev) : data_(initData), next_(nullptr), prev_(prev) {}
+        DoubleNode() = delete; // No need for a constructor with garbage
+        DoubleNode(T initData) : DoubleNode(initData, nullptr) {}
+        DoubleNode(T initData, DoubleNode* prev) : data_(initData), next_(nullptr), prev_(prev) {}
         
         // Methods
 
@@ -23,11 +24,11 @@ class DoubleNode
         void linkPrev(DoubleNode* newPrev);
 
         // Setters
-        void setData(int newData)   { this->data_ = newData; }
+        void setData(const T& newData)   { this->data_ = newData; }
         void setNext(DoubleNode* newNext) { this->next_ = newNext; }
         void setPrev(DoubleNode* newPrev) { this->prev_ = newPrev; }
         // Getters
-        int getData() const { return this->data_; }
+        T getData() const { return this->data_; }
         DoubleNode* getNext() const { return this->next_; }
         DoubleNode* getPrev() const { return this->prev_; }
         

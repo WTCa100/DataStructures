@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "../Utilities/Utilities.hpp"
+#include "../../Common/Utilities/Utilities.hpp"
 #include "SingleLinkedList.hpp"
 
 template <typename T>
@@ -23,12 +23,12 @@ SingleLinkedList<T>::~SingleLinkedList()
 {
     std::cout << "Tearing down Single Linked List " << this << " with head at " << this->head_ << "\n";
 
-    SingleNode* helper = this->head_;
+    SingleNode<T>* helper = this->head_;
     if(!this->isEmpty())
     {
         while(helper)
         {
-            SingleNode* nextNode = helper->getNext();
+            SingleNode<T>* nextNode = helper->getNext();
             delete(helper);
             helper = nextNode;
             --this->size_;
@@ -56,7 +56,7 @@ void SingleLinkedList<T>::popHead()
     }
     else
     {
-        SingleNode* currentHead = this->head_;
+        SingleNode<T>* currentHead = this->head_;
         this->head_ = currentHead->getNext();
         delete(currentHead);
     }
@@ -80,8 +80,8 @@ void SingleLinkedList<T>::popBack()
 
     std::cout << "Deleting back at Single Linked List " << this << "\n";
     int deletedNodeData;
-    SingleNode* prev   = this->head_;
-    SingleNode* last   = this->head_->getNext();
+    SingleNode<T>* prev   = this->head_;
+    SingleNode<T>* last   = this->head_->getNext();
     while(last->getNext())
     {
         prev = last;
@@ -122,8 +122,8 @@ void SingleLinkedList<T>::popAt(const size_t& pos)
     else
     {
         T deletedNodeData;
-        SingleNode* prev = this->head_;
-        SingleNode* target = prev->getNext();
+        SingleNode<T>* prev = this->head_;
+        SingleNode<T>* target = prev->getNext();
         size_t index = 1;
         while(index < pos)
         {
@@ -146,7 +146,7 @@ void SingleLinkedList<T>::popAt(const size_t& pos)
 template <typename T>
 void SingleLinkedList<T>::insertHead(const int& newValue)
 {
-    this->insertHead(new SingleNode(newValue));
+    this->insertHead(new SingleNode<T>(newValue));
 }
 
 template <typename T>
@@ -172,7 +172,7 @@ void SingleLinkedList<T>::insertHead(SingleNode<T>* newNode)
 template <typename T>
 void SingleLinkedList<T>::pushBack(const T& newValue)
 {
-    this->pushBack(new SingleNode(newValue));
+    this->pushBack(new SingleNode<T>(newValue));
 }
 
 template <typename T>
@@ -187,7 +187,7 @@ void SingleLinkedList<T>::pushBack(SingleNode<T>* newNode)
     }
     else
     {
-        SingleNode* last = this->head_;
+        SingleNode<T>* last = this->head_;
         while(last->getNext())
         {
             last = last->getNext();
@@ -203,7 +203,7 @@ void SingleLinkedList<T>::pushBack(SingleNode<T>* newNode)
 template <typename T>
 void SingleLinkedList<T>::insertAt(const T& newValue, const size_t& pos)
 {
-    this->insertAt(new SingleNode(newValue), pos);
+    this->insertAt(new SingleNode<T>(newValue), pos);
 }
 
 template <typename T>
@@ -223,8 +223,8 @@ void SingleLinkedList<T>::insertAt(SingleNode<T>* newNode, const size_t& pos)
     else
     {
         std::cout << "Adding " << newNode << " with data_=" << newNode->getData() << " at " << this << " pos " << pos << "\n";
-        SingleNode* prev = this->head_;
-        SingleNode* currentIndexNode = prev->getNext();
+        SingleNode<T>* prev = this->head_;
+        SingleNode<T>* currentIndexNode = prev->getNext();
         size_t index = 0;
         while(index < pos - 1)
         {
@@ -254,7 +254,7 @@ bool SingleLinkedList<T>::isPresent(const T& value) const
         return false;
     }
 
-    SingleNode* ptr  = this->head_;
+    SingleNode<T>* ptr  = this->head_;
     while(ptr)
     {
         if(ptr->getData() == value)
@@ -278,7 +278,7 @@ void SingleLinkedList<T>::parse() const
         return;
     }
 
-    SingleNode* helper = this->head_;
+    SingleNode<T>* helper = this->head_;
     std::cout << "Parsing Single Linked List at " << this << " with head at " << this->head_ << "\n";
     while(helper)
     {
@@ -304,7 +304,7 @@ T SingleLinkedList<T>::at(const size_t& pos)
         throw std::out_of_range(errMsg.str().c_str());
     }
 
-    SingleNode* ptr = this->head_;
+    SingleNode<T>* ptr = this->head_;
     size_t index = 0;
 
     while(index < pos)
@@ -320,7 +320,7 @@ template <typename T>
 std::vector<int> SingleLinkedList<T>::getValues()
 {
     std::vector<int> out;
-    SingleNode* ptr = this->head_;
+    SingleNode<T>* ptr = this->head_;
     while(ptr)
     {
         out.push_back(ptr->getData());
