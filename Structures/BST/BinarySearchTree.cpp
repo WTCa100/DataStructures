@@ -257,10 +257,10 @@ TreeNode<T>* BinarySearchTree<T>::recursiveFinder(TreeNode<T>* node, T targetVal
 template <typename T>
 TreeNode<T>* BinarySearchTree<T>::deepCopyNode(TreeNode<T>* head) const
 {
-    TreeNode* copiedNode = nullptr;
+    TreeNode<T>* copiedNode = nullptr;
     if(head)
     {
-        copiedNode = new TreeNode(*head);
+        copiedNode = new TreeNode<T>(*head);
         if(head->left_)
         {
             copiedNode->left_ = deepCopyNode(head->left_);
