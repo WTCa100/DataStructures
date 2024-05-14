@@ -3,14 +3,15 @@
 
 #include "./DoubleEndedQueue.hpp"
 
-Deque::Deque(size_t capacity) : data_{0}, front_(-1), rear_(-1), capacity_(capacity), size_(0), isEmpty_(true)
+template <typename T>
+Deque<T>::Deque(size_t capacity) : data_{0}, front_(-1), rear_(-1), capacity_(capacity), size_(0), isEmpty_(true)
 {
     std::cout << "Created a Double Ended Queue" << std::endl; 
     std::cout << "DBG: front=" << front_ << " rear=" << rear_ << " size=" << size_ << " isEmpty=" << std::boolalpha << isEmpty_ << std::endl;
 }
 
-
-void Deque::insertFront(int value)
+template <typename T>
+void Deque<T>::insertFront(T value)
 {
     if(size_ == capacity_)
     {
@@ -47,7 +48,8 @@ void Deque::insertFront(int value)
 
 }
 
-void Deque::removeFront()
+template <typename T>
+void Deque<T>::removeFront()
 {
     if(isEmpty_)
     {
@@ -55,7 +57,7 @@ void Deque::removeFront()
         return;
     }
 
-    int deletedValue = data_[front_];
+    T deletedValue = data_[front_];
     data_[front_] = 0;
     std::cout << "Deleting front (value " << deletedValue << ")\n"; 
     if(front_ == rear_) // This scenario occurs only when 1 value is left
@@ -73,7 +75,8 @@ void Deque::removeFront()
     std::cout << "DBG: front=" << front_ << " rear=" << rear_ << " size=" << size_ << " isEmpty=" << std::boolalpha << isEmpty_ << std::endl;
 }
 
-void Deque::insertRear(int value)
+template <typename T>
+void Deque<T>::insertRear(T value)
 {
     std::cout << "DBG: size=" << size_ << " capacity_=" << capacity_ << "\n";
     if(size_ == capacity_)
@@ -107,7 +110,9 @@ void Deque::insertRear(int value)
     std::cout << "Successfully enqued new value " << value << " at pos " << rear_ << " (rear)"<< "\n";
     std::cout << "DBG: front=" << front_ << " rear=" << rear_ << " size=" << size_ << " isEmpty=" << std::boolalpha << isEmpty_ << std::endl;
 }
-void Deque::removeRear()
+
+template <typename T>
+void Deque<T>::removeRear()
 {
     if(isEmpty_)
     {
@@ -115,7 +120,7 @@ void Deque::removeRear()
         return;
     }
 
-    int deletedValue = data_[rear_];
+    T deletedValue = data_[rear_];
     std::cout << "Deleting rear (value " << deletedValue << ")\n";
     if(front_ == rear_)
     {
@@ -136,7 +141,8 @@ void Deque::removeRear()
 /// @param pos N-th position
 /// @warning Can get out of bounds resulting in sigkill
 /// @return Value of N-th position
-int& Deque::operator[](size_t pos)
+template <typename T>
+T& Deque<T>::operator[](size_t pos)
 {
     size_t index = front_ + pos;
     if(index >= capacity_) index = index % capacity_;

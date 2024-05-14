@@ -9,10 +9,11 @@ typedef unsigned long size_t;
 
 #define MAX_QUEUE_SIZE 160
 
+template <typename T>
 class Deque
 {
 private:
-    int data_[MAX_QUEUE_SIZE];
+    T data_[MAX_QUEUE_SIZE];
     long front_;
     long rear_;
     size_t capacity_;
@@ -23,18 +24,18 @@ public:
     Deque(size_t capacity = MAX_QUEUE_SIZE);
     ~Deque() = default;
 
-    void insertFront(int value);
+    void insertFront(T value);
     void removeFront();
-    void insertRear(int value);
+    void insertRear(T value);
     void removeRear();
 
-    int peekFront() const { return data_[front_]; } 
-    int peekRear()  const { return data_[rear_];  }
+    T peekFront() const { return data_[front_]; } 
+    T peekRear()  const { return data_[rear_];  }
 
     bool isEmpty() const { return isEmpty_; }
     size_t getSize() const { return size_; }
 
-    int& operator[](size_t pos);
+    T& operator[](size_t pos);
 
 };
 
