@@ -96,10 +96,6 @@ public:
     /// @warning This function can get out of bound resulting in undefined behavior
     const bucket<K, V>& getBucket(const size_t& index) const { return table_[index]; }
 
-    /// @brief Returns an immutable refference to a pair with given key from the hash table
-    /// @param key key value
-    /// @return refference of pair with key, nullptr if no entry exists
-    /// @todo something is off with this function - need more time to investigate
     const std::pair<K, V>& getBucketEntry(const K& key) const;
 };
 
@@ -345,18 +341,16 @@ V* HashTable<K, V>::getValue(const K& key)
 template<typename K, typename V>
 const std::pair<K, V>& HashTable<K, V>::getBucketEntry(const K& key) const
 {
-    bucket<K, V> targetBucket = getBucket(key);
-
-    auto present = std::find_if(targetBucket.begin(), targetBucket.end(),
+    auto present = std::find_if(getBucket(key).begin(), getBucket(key).end(),
                   [&key](const std::pair<K, V>& element) { return element.first == key; });
-    if(present != targetBucket.end()) return *present;
+    if(present != getBucket(key).end()) return *present;
 
     /* Due to implementation limitation this function will have to throw an error if no entry is found with a given key.
        I wanted to make this function to work similar to i.e. std::find(), that will some form of invalid an uqnie entry
        if no entry with key is found - however since ths find_if returns an iterator to a vector it will not be possible
        to refference it back into the const std::pair<K, V>& const as the returned address will be pointing at the vector
        iterator and not the actual std::pair entry*/
-    throw std::runtime_error("No entry with given key was found - first check, then get");
+    throw std::runtime_error("No entry with given key was found - first check, then get!");
 }
 
 // Just for now
