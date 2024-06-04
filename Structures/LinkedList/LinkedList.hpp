@@ -1,6 +1,10 @@
+#ifndef STRUCTURES_LINKEDLIST_LINKEDLIST_HPP
+#define STRUCTURES_LINKEDLIST_LINKEDLIST_HPP
+
 // Interface file
 #include <vector>
 
+template <typename T>
 class LinkedList
 {
     protected:
@@ -16,16 +20,18 @@ class LinkedList
     virtual void popBack() = 0;
     virtual void popAt(const size_t& pos) = 0; 
     // Adding
-    virtual void insertHead(const int& newValue) = 0;
-    virtual void pushBack(const int& newValue) = 0;
-    virtual void insertAt(const int& newValue, const size_t& pos) = 0;
+    virtual void insertHead(const T& newValue) = 0;
+    virtual void pushBack(const T& newValue) = 0;
+    virtual void insertAt(const T& newValue, const size_t& pos) = 0;
     // Parsing
-    virtual bool isPresent(const int& value) const = 0;
+    virtual bool isPresent(const T& value) const = 0;
     virtual void parse() const = 0;
 
     // Getters
-    bool isEmpty() { return this->isEmpty_; }
-    size_t getSize() { return this->size_; }
-    virtual int at(const size_t& pos) = 0;
-    virtual std::vector<int> getValues() = 0;
+    bool isEmpty() { return isEmpty_; }
+    size_t getSize() { return size_; }
+    virtual T at(const size_t& pos) = 0;
+    virtual std::vector<T> getValues() = 0;
 };
+
+#endif //STRUCTURES_LINKEDLIST_LINKEDLIST_HPP

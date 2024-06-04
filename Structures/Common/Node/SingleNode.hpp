@@ -16,7 +16,7 @@ class SingleNode
         SingleNode* next_;
     public:
         SingleNode() = default;
-        SingleNode(int initData) : data_(initData), next_(nullptr) {}
+        SingleNode(T initData) : data_(initData), next_(nullptr) {}
 
         // Setter
         void setData(T newData) { data_ = newData; }
