@@ -2,8 +2,8 @@
 #include <cstddef>
 #include "../../Common/Node/TreeNode.hpp"
 
-#ifndef STRUCTURES_BST_BINARYSEARCHTREE_HPP
-#define STRUCTURES_BST_BINARYSEARCHTREE_HPP
+#ifndef STRUCTURES_TREE_BINARYSEARCHTREE_HPP
+#define STRUCTURES_TREE_BINARYSEARCHTREE_HPP
 
 template <typename T>
 class BinarySearchTree
@@ -399,4 +399,3 @@ BinarySearchTree<T>::~BinarySearchTree()
     recursiveTeardown(head_);  
 }
 #endif
-

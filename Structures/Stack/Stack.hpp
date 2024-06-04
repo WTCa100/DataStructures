@@ -1,5 +1,5 @@
-#ifndef STRUCTURES_STACK_STACK_HPP
-#define STRUCTURES_STACK_STACK_HPP
+#ifndef STRUCTURES_STACK_HPP
+#define STRUCTURES_STACK_HPP
 
 #include "../Common/Node/SingleNode.hpp"
 

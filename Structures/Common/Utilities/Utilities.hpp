@@ -1,5 +1,5 @@
-#ifndef STRUCTURES_COMMON_NODE_UTILITIES_H
-#define STRUCTURES_COMMON_NODE_UTILITIES_H
+#ifndef STRUCTURES_COMMON_UTILITIES_H
+#define STRUCTURES_COMMON_UTILITIES_H
 
 #include "../Node/DoubleNode.hpp"
 #include "../Node/SingleNode.hpp"
@@ -57,6 +57,4 @@ namespace Utilities
     }
 
 } // namespace Utilities
-
-
 #endif

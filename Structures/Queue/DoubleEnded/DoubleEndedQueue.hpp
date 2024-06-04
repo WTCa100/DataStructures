@@ -1,5 +1,5 @@
-#ifndef STRUCTURES_QUEUE_DOUBLEENDED_DOUBLEENDEDQUEUE_HPP
-#define STRUCTURES_QUEUE_DOUBLEENDED_DOUBLEENDEDQUEUE_HPP
+#ifndef STRUCTURES_QUEUE_DOUBLEENDEDQUEUE_HPP
+#define STRUCTURES_QUEUE_DOUBLEENDEDQUEUE_HPP
 
 
 #ifndef __SIZE_T
@@ -184,5 +184,4 @@ T& Deque<T>::operator[](size_t pos)
     if(index >= capacity_) index = index % capacity_;
     return data_[index];
 }
-
 #endif

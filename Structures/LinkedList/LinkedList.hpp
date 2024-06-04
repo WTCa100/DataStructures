@@ -1,5 +1,5 @@
-#ifndef STRUCTURES_LINKEDLIST_LINKEDLIST_HPP
-#define STRUCTURES_LINKEDLIST_LINKEDLIST_HPP
+#ifndef STRUCTURES_LINKEDLIST_HPP
+#define STRUCTURES_LINKEDLIST_HPP
 
 // Interface file
 #include <vector>
@@ -34,4 +34,4 @@ class LinkedList
     virtual std::vector<T> getValues() = 0;
 };
 
-#endif //STRUCTURES_LINKEDLIST_LINKEDLIST_HPP
+#endif //STRUCTURES_LINKEDLIST_HPP
