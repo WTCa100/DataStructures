@@ -33,5 +33,4 @@ class LinkedList
     virtual T at(const size_t& pos) = 0;
     virtual std::vector<T> getValues() = 0;
 };
-
 #endif //STRUCTURES_LINKEDLIST_HPP

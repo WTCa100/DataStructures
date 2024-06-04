@@ -27,5 +27,4 @@ TreeNode<T>::TreeNode(const TreeNode<T>& obj)
     left_  = nullptr;
     right_ = nullptr;
 }
-
 #endif

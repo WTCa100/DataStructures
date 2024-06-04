@@ -27,5 +27,4 @@ class SingleNode
 
         ~SingleNode() = default;
 };
-
 #endif

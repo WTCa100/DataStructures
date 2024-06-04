@@ -364,5 +364,4 @@ HashTable<K, V>::~HashTable()
 
     table_.clear();
 }
-
 #endif

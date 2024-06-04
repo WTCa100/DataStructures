@@ -404,7 +404,4 @@ std::vector<T> DoubleLinkedList<T>::getValues()
     }
     return out;
 }
-
-
-
 #endif

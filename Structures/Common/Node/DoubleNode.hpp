@@ -60,5 +60,4 @@ void DoubleNode<T>::linkPrev(DoubleNode<T>* newPrev)
         newPrev->setPrev(this);
     }
 }
-
 #endif
