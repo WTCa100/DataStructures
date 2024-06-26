@@ -1,9 +1,9 @@
+#ifndef STRUCTURES_TREE_BINARYSEARCHTREE_HPP
+#define STRUCTURES_TREE_BINARYSEARCHTREE_HPP
+
 #include <vector>
 #include <cstddef>
 #include "../../Common/Node/TreeNode.hpp"
-
-#ifndef STRUCTURES_TREE_BINARYSEARCHTREE_HPP
-#define STRUCTURES_TREE_BINARYSEARCHTREE_HPP
 
 template <typename T>
 class BinarySearchTree
@@ -127,6 +127,7 @@ void BinarySearchTree<T>::insert(TreeNode<T>* newNode)
         std::cout << "Could not add value to the BST" << std::endl;
     }
 
+    // @TODO - validate if the nodes can be inserted! Otherwise the BST can loose it's properties
 
     std::cout << "DBG: size= " << size_ << " isEmpty= " << std::boolalpha << isEmpty_ << std::endl;
 }
